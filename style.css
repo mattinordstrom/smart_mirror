@@ -1,0 +1,42 @@
+html {
+    width: 100%;
+    height: 100%;
+  }
+  body {
+    width: 100%;
+    height: 100%;
+    
+    margin: 0px;
+    padding: 0px;
+    color:#fff;
+    background-color:#000;
+    font-family: "Impact";
+  }
+  h1 {
+	margin-top: 0px;
+	font-size: 32pt;
+  }
+  #container {
+	width: 100%;
+	height: 100%;
+  }
+  #content {
+	position: relative;
+	-webkit-transform: rotate(-90deg);
+	-webkit-transform-origin: 0% 0%;
+  }
+  #inner_content {
+	width: 100%;
+	position:absolute; 
+  }
+  .content_div_left {
+	float:left; 
+	margin-left: 20px;
+	margin-top: 10px;
+  }
+  .content_div_right {
+	float:right; 
+	margin-right: 20px;
+	text-align:right;
+	margin-top: 10px;
+  }
