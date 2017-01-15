@@ -1,0 +1,25 @@
+{
+  "name": "smartmirror",
+  "version": "0.0.0",
+  "description": "$ chromium-browser --kiosk file:///home/pi/smart_mirror/index.html (ctrl + w to exit)",
+  "main": "main.js",
+  "dependencies": {
+    "dark-sky": "^1.0.10",
+    "google-auth-library": "^0.10.0",
+    "googleapis": "^16.0.0",
+    "socket.io": "^1.7.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mattinordstrom/smartmirror.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mattinordstrom/smartmirror/issues"
+  }
+}
