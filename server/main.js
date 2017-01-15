@@ -1,29 +1,36 @@
 var gcal = require('./quickstart.js');
-var http = require("http");
 
-var Main = function () {
-	//TODO
-	//this.initServer();
+var SYNC_INTERVAL_CAL = 15; //seconds
 
-	var googleCal = new gcal();
-	googleCal.readFile();
+var app = require('http').createServer();
+var io = require('socket.io')(app);
+app.listen(8081);
+
+var Main = function (socket) {
+	console.log('io connected');
+	
+	this.googleCal = new gcal();
+	this.googleCal.readFile();
+	
+	setInterval(function() { 
+		var oauth2Client = this.googleCal.getAuthClient();
+		if(oauth2Client){
+			this.googleCal.listEvents(oauth2Client, function(err, response){
+				if (err) {
+					console.log('The API returned an error: ' + err);
+					return;
+				}
+				
+				//console.log('Emitting calendar events');
+				socket.emit('calEvents', { calEvents: response.items });
+				
+			});
+		} else {
+			console.log('oauth2Client not set yet.');	
+		}
+		
+	}.bind(this), SYNC_INTERVAL_CAL * 1000);
+	
 }
-Main.prototype.initServer = function () {
-	http.createServer(function (request, response) {
 
-		// Send the HTTP header
-		// HTTP Status: 200 : OK
-		// Content Type: text/plain
-		response.writeHead(200, {'Content-Type': 'text/plain'});
-
-		// Send the response body as "Hello World"
-		response.end('Hello World\n');
-	}).listen(8081);
-
-	// Console will print the message
-	console.log('Server running at http://127.0.0.1:8081/');
-}
-
-new Main();
-
-module.exports = Main;
+io.on('connection', Main);

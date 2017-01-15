@@ -9,23 +9,31 @@ var SCOPES = ['https://www.googleapis.com/auth/calendar.readonly'];
 var TOKEN_DIR = (process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE) + '/.credentials/';
 var TOKEN_PATH = TOKEN_DIR + 'calendar-nodejs-quickstart.json';
 
-var GCal = function () {
+function GCal() {
+	var oAuth2Client = null;
+	
+	this.setAuthClient = function(oauth2Client) {
+        oAuth2Client = oauth2Client;
+    }
+
+    this.getAuthClient = function() {
+        return oAuth2Client;
+    }
 }
 
 GCal.prototype.readFile = function () {
 	// Load client secrets from a local file.
-	var test = fs.readFile('client_secret.json', function processClientSecrets(err, content) {
+	fs.readFile('client_secret.json', function processClientSecrets(err, content) {
 		if (err) {
 			console.log('Error loading client secret file: ' + err);
 			return;
 		}
 		// Authorize a client with the loaded credentials, then call the
 		// Google Calendar API.
-		this.authorize(JSON.parse(content), this.listEvents);
+		this.authorize(JSON.parse(content), this.setAuthClient);
 	}.bind(this));
 
 };
-
 
 /**
  * Create an OAuth2 client with the given credentials, and then execute the
@@ -106,7 +114,7 @@ GCal.prototype.storeToken = function (token) {
  *
  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
  */
-GCal.prototype.listEvents = function (auth) {
+GCal.prototype.listEvents = function (auth, callback) {
 	var calendar = google.calendar('v3');
 	calendar.events.list({
 		auth: auth,
@@ -115,28 +123,8 @@ GCal.prototype.listEvents = function (auth) {
 		maxResults: 10,
 		singleEvents: true,
 		orderBy: 'startTime'
-	}, function (err, response) {
-		if (err) {
-			console.log('The API returned an error: ' + err);
-			return;
-		}
-		var events = response.items;
-		if (events.length == 0) {
-			console.log('No upcoming events found.');
-		} else {
-			console.log('Upcoming 10 events:');
-			for (var i = 0; i < events.length; i++) {
-				var event = events[i];
-				var start = event.start.dateTime || event.start.date;
-				console.log('%s - %s', start, event.summary);
-			}
-		}
-	});
+	}, callback);
+	
 }
-
-/*GCal.prototype.setAuthorizedClient = function(auth){
- console.log('auth: '+auth)
- this.authorizedClient = auth;
- }*/
 
 module.exports = GCal;

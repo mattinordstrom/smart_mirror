@@ -4,9 +4,20 @@
     <title>Smart mirror</title>
     <link rel="stylesheet" type="text/css" href="style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
     <script src="src/clock.js"></script>
     <script src="src/weather.js"></script>
     <script type="text/javascript">
+		var socket = io('http://localhost:8081');
+		socket.on('calEvents', function (data) {
+			var calEvent, calEventsHTMLString = '';
+			for (var i = 0; i < data.calEvents.length; i++) {
+				calEvent = data.calEvents[i];
+				calEventsHTMLString += "<b>"+calEvent.start.dateTime + "</b> : " + calEvent.summary + "<br/>";
+			}
+			$('#calEvents').html(calEventsHTMLString);
+		});
+  
 			function setSizeOnElements() {
 				$('#content').css({
 					top: $('#container').height(),
@@ -37,23 +48,23 @@
         <div id="inner_content">
             <div id="top_row">
                 <div id="div_time" class="content_div_left">
-                    <h1>14:23</h1>
-                    <h4>SATURDAY, JANUARY 7</h4>
+                    <h1>00:00</h1>
+                    <h4>MONDAY, JANUARY 1</h4>
                 </div>
                 <div id="div_weather" class="content_div_right">
-                    <h1>4&deg;</h1>
+                    <h1>0&deg;</h1>
                     <h4>CLEAR, SUNNY</h4>
-                    <h4>VÄXJÖ</h4>
+                    <h4>CITY</h4>
                 </div>
             </div>
             <div id="middle_row">
                 <div id="div_mail" class="content_div_left">
                     <h3>MAIL</h3>
-                    2 new
+                    0 new
                 </div>
                 <div id="div_calendar" class="content_div_right">
                     <h3>CALENDAR</h3>
-                    09:00: Daily standup
+                    <div id="calEvents"></div>
                 </div>
             </div>
             <div id="bottom_row">
