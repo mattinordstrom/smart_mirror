@@ -1,9 +1,12 @@
-var gcal = require('./quickstart.js');
+'use strict';
 
-var SYNC_INTERVAL_CAL = 15; //seconds
+let forecast = require('./darkskyweather.js');
+let gcal = require('./quickstart.js');
 
-var app = require('http').createServer();
-var io = require('socket.io')(app);
+const SYNC_INTERVAL_CAL = 15; //seconds
+
+let app = require('http').createServer();
+let io = require('socket.io')(app);
 app.listen(8081);
 
 var Main = function (socket) {
@@ -12,8 +15,13 @@ var Main = function (socket) {
 	this.googleCal = new gcal();
 	this.googleCal.readFile();
 	
+	this.forecast = new forecast();
+	
 	setInterval(function() { 
-		var oauth2Client = this.googleCal.getAuthClient();
+		
+		//GOOGLE CALENDAR
+		///////////////////////
+		let oauth2Client = this.googleCal.getAuthClient();
 		if(oauth2Client){
 			this.googleCal.listEvents(oauth2Client, function(err, response){
 				if (err) {
@@ -21,13 +29,18 @@ var Main = function (socket) {
 					return;
 				}
 				
-				//console.log('Emitting calendar events');
 				socket.emit('calEvents', { calEvents: response.items });
 				
 			});
 		} else {
 			console.log('oauth2Client not set yet.');	
 		}
+		
+		//DARKSKY WEATHER
+		///////////////////////
+		this.forecast.getForecast(function(response){
+			socket.emit('forecast', { forecast: response });
+		});
 		
 	}.bind(this), SYNC_INTERVAL_CAL * 1000);
 	

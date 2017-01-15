@@ -6,7 +6,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
     <script src="src/clock.js"></script>
-    <script src="src/weather.js"></script>
     <script type="text/javascript">
 		var socket = io('http://localhost:8081');
 		socket.on('calEvents', function (data) {
@@ -16,6 +15,11 @@
 				calEventsHTMLString += "<b>"+calEvent.start.dateTime + "</b> : " + calEvent.summary + "<br/>";
 			}
 			$('#calEvents').html(calEventsHTMLString);
+		});
+		socket.on('forecast', function (data) {
+			$('#div_weather h1:first').html(data.forecast.currently.temperature + "&deg;");
+			$('#div_weather :eq(1)').html(data.forecast.currently.summary);
+			$('#weatherCoords').html("Latitude: " + data.forecast.latitude + "<br/>Longitude: " + data.forecast.longitude);
 		});
   
 			function setSizeOnElements() {
@@ -54,7 +58,7 @@
                 <div id="div_weather" class="content_div_right">
                     <h1>0&deg;</h1>
                     <h4>CLEAR, SUNNY</h4>
-                    <h4>CITY</h4>
+                    <div id="weatherCoords"></div>
                 </div>
             </div>
             <div id="middle_row">
