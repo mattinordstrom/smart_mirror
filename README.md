@@ -20,3 +20,4 @@ https://developers.google.com/google-apps/calendar/quickstart/nodejs
 Darksky setup:
 Change server/darksky-info.js
 Get API key from here: https://darksky.net/dev/
+(git update-index --assume-unchanged server/darksky_info.js)
