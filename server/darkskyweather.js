@@ -1,6 +1,6 @@
 'use strict';
 const DarkSky = require('dark-sky');
-let darkskyInfo = require('./darksky-info.js');
+let darkskyInfo = require('./darksky_info.js');
 
 var Forecast = function () {
 	this.forecast = new DarkSky(darkskyInfo.DARKSKY_API_KEY);
