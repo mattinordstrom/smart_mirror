@@ -7,6 +7,7 @@
     <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
     <script src="src/lib/skycons.js"></script>
     <script src="src/clock.js"></script>
+    <script src="src/news.js"></script>
     <script src="src/darksky_weather.js"></script>
     <script type="text/javascript">
 		var socket = io('http://localhost:8081');
@@ -50,6 +51,7 @@
 			$(document).ready(function () {
 				setSizeOnElements();
 				setTime();
+				setNews();
 			});
 
     </script>
@@ -83,16 +85,11 @@
             <div id="bottom_row">
                 <div id="div_news" class="content_div_left">
                     <h3>NEWS</h3>
-                    <h4>Test test...</h4>
-                    <h4>Test test...</h4>
-                    <h4>Test test...</h4>
+                    <div id="news_content">Test test...</div>
                 </div>
                 <div id="div_technews" class="content_div_right">
                     <h3>TECH NEWS</h3>
-                    <h4>Test test...</h4>
-                    <h4>Test test...</h4>
-                    <h4>Test test...</h4>
-                    <h4>Test test...</h4>
+                    <div id="technews_content">Test test...</div>
                 </div>
             </div>
         </div>
