@@ -141,7 +141,7 @@ GApi.prototype.listEvents = function (auth, callback) {
  *
  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
  */
-GApi.prototype.listEmails = function (auth, callback) {
+GApi.prototype.listUnreadEmails = function (auth, callback) {
 	if(this.type !== 'gmail') {
 		console.log('Error: Type is not gmail. '+this.type);
 		return;
@@ -161,6 +161,27 @@ GApi.prototype.listEmails = function (auth, callback) {
 			callback(response);
 	  });
 	  
+}
+
+GApi.prototype.getLatestUnread = function (auth, callback, unreadEmails) {
+	if(this.type !== 'gmail') {
+		console.log('Error: Type is not gmail. '+this.type);
+		return;
+	}
+	
+	var gmail = google.gmail('v1');
+	  gmail.users.messages.get({
+		auth: auth,
+		userId: 'me',
+		id: unreadEmails.messages[0].id
+	  }, function (err, response) {
+		  if (err) {
+			  console.log('The API returned an error: ' + err);
+			  return;
+			}
+			
+			callback(response);
+	  });
 }
 
 module.exports = GApi;

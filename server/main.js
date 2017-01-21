@@ -20,13 +20,18 @@ var Main = function (socket) {
 	
 	this.forecast = new forecast();
 	
+	//calendar, mail, weather
+	this.ongoingProcesses = [false,false,false];
+	
 	setInterval(function() { 
 		
 		//GOOGLE CALENDAR
 		///////////////////////
 		let oauth2ClientCAL = this.googleCal.getAuthClient();
-		if(oauth2ClientCAL){
+		if(oauth2ClientCAL && !this.ongoingProcesses[0]){
+			this.ongoingProcesses[0] = true;
 			this.googleCal.listEvents(oauth2ClientCAL, function(err, response){
+				this.ongoingProcesses[0] = false;
 				if (err) {
 					console.log('The API returned an error: ' + err);
 					return;
@@ -34,7 +39,7 @@ var Main = function (socket) {
 				
 				socket.emit('calEvents', { calEvents: response.items });
 				
-			});
+			}.bind(this));
 		} else {
 			console.log('oauth2Client not set yet.');	
 		}
@@ -42,20 +47,27 @@ var Main = function (socket) {
 		//GOOGLE MAIL
 		///////////////////////
 		let oauth2ClientMAIL = this.googleMail.getAuthClient();
-		if(oauth2ClientMAIL){
-			this.googleMail.listEmails(oauth2ClientMAIL, function(response){
-				socket.emit('emails', { unreadEmails: response.resultSizeEstimate });
+		if(oauth2ClientMAIL && !this.ongoingProcesses[1]){
+			this.ongoingProcesses[1] = true;
+			this.googleMail.listUnreadEmails(oauth2ClientMAIL, function(response){
+				this.ongoingProcesses[1] = false;
+				socket.emit('emails', { numberOfUnreadEmails: response.resultSizeEstimate });
 				
-			});
+			}.bind(this));
+			
 		} else {
 			console.log('oauth2Client not set yet.');	
 		}
 		
 		//DARKSKY WEATHER
 		///////////////////////
-		this.forecast.getForecast(function(response){
-			socket.emit('forecast', { forecast: response });
-		});
+		if(!this.ongoingProcesses[2]){
+			this.ongoingProcesses[2] = true;
+			this.forecast.getForecast(function(response){
+				this.ongoingProcesses[2] = false;
+				socket.emit('forecast', { forecast: response });
+			}.bind(this));
+		}
 		
 	}.bind(this), SYNC_INTERVAL * 1000);
 	

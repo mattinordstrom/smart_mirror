@@ -9,18 +9,24 @@
     <script type="text/javascript">
 		var socket = io('http://localhost:8081');
 		socket.on('calEvents', function (data) {
-			var calEvent, calEventsHTMLString = '';
+			var calEvent, calEventsHTMLString = '', timeObj, timeString;
 			for (var i = 0; i < data.calEvents.length; i++) {
 				calEvent = data.calEvents[i];
-				calEventsHTMLString += "<b>"+calEvent.start.dateTime + "</b> : " + calEvent.summary + "<br/>";
+				timeObj = new Date(calEvent.start.dateTime);
+				var m = timeObj.getMinutes();
+				if (m < 10) {
+					m = "0" + m;
+				}
+				timeString = timeObj.getDate() + '/' +  (timeObj.getMonth()+1) + ' ' + timeObj.getHours() + ':' + m;
+				calEventsHTMLString += "<b>"+ timeString + ":</b> " + calEvent.summary + "<br/>";
 			}
 			$('#calEvents').html(calEventsHTMLString);
 		});
 		socket.on('emails', function (data) {
-			$('#emails').html('Unread emails: ' + data.unreadEmails);
+			$('#emails').html('Unread emails: ' + data.numberOfUnreadEmails);
 		});
 		socket.on('forecast', function (data) {
-			$('#div_weather h1:first').html(data.forecast.currently.temperature + "&deg;");
+			$('#div_weather h1:first').html(data.forecast.currently.temperature.toFixed(1) + "&deg;");
 			$('#div_weather :eq(1)').html(data.forecast.currently.summary);
 			$('#weatherCoords').html("Latitude: " + data.forecast.latitude + "<br/>Longitude: " + data.forecast.longitude);
 		});
