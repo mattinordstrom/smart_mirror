@@ -5,7 +5,9 @@
     <link rel="stylesheet" type="text/css" href="style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+    <script src="src/lib/skycons.js"></script>
     <script src="src/clock.js"></script>
+    <script src="src/darksky_weather.js"></script>
     <script type="text/javascript">
 		var socket = io('http://localhost:8081');
 		socket.on('calEvents', function (data) {
@@ -26,9 +28,7 @@
 			$('#emails').html('Unread emails: ' + data.numberOfUnreadEmails);
 		});
 		socket.on('forecast', function (data) {
-			$('#div_weather h1:first').html(data.forecast.currently.temperature.toFixed(1) + "&deg;");
-			$('#div_weather :eq(1)').html(data.forecast.currently.summary);
-			$('#weatherCoords').html("Latitude: " + data.forecast.latitude + "<br/>Longitude: " + data.forecast.longitude);
+			handleWeather(data);
 		});
   
 			function setSizeOnElements() {
@@ -66,6 +66,7 @@
                 <div id="div_weather" class="content_div_right">
                     <h1>Waiting for data...</h1>
                     <h4></h4>
+					<canvas id="weather_icon" width="128" height="128"></canvas>
                     <div id="weatherCoords"></div>
                 </div>
             </div>
