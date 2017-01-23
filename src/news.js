@@ -1,6 +1,3 @@
-let NEWSAPI_API_KEY = '';
-let NEWSAPI_SOURCE = 'bbc-news'; 
-let NEWSAPI_TECH_SOURCE = 'techcrunch'; 
 function setNews() {
 	$('.news_title').html( NEWSAPI_SOURCE );
 	$('.technews_title').html( NEWSAPI_TECH_SOURCE );
