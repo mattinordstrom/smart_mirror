@@ -13,15 +13,20 @@
 		var socket = io('http://localhost:8081');
 		socket.on('calEvents', function (data) {
 			var calEvent, calEventsHTMLString = '', timeObj, timeString;
-			for (var i = 0; i < data.calEvents.length; i++) {
-				calEvent = data.calEvents[i];
-				timeObj = new Date(calEvent.start.dateTime);
-				var m = timeObj.getMinutes();
-				if (m < 10) {
-					m = "0" + m;
+			
+			if(data.calEvents.length == 0) {
+				calEventsHTMLString = 'No events in calendar';
+			} else {
+				for (var i = 0; i < data.calEvents.length; i++) {
+					calEvent = data.calEvents[i];
+					timeObj = new Date(calEvent.start.dateTime);
+					var m = timeObj.getMinutes();
+					if (m < 10) {
+						m = "0" + m;
+					}
+					timeString = timeObj.getDate() + '/' +  (timeObj.getMonth()+1) + ' ' + timeObj.getHours() + ':' + m;
+					calEventsHTMLString += "<b>"+ timeString + ":</b> " + calEvent.summary + "<br/>";
 				}
-				timeString = timeObj.getDate() + '/' +  (timeObj.getMonth()+1) + ' ' + timeObj.getHours() + ':' + m;
-				calEventsHTMLString += "<b>"+ timeString + ":</b> " + calEvent.summary + "<br/>";
 			}
 			$('#calEvents').html(calEventsHTMLString);
 		});
@@ -66,31 +71,39 @@
                     <h4></h4>
                 </div>
                 <div id="div_weather" class="content_div_right">
-                    <h1>Waiting for data...</h1>
-                    <h4></h4>
+                    <h1></h1>
+                    <h4>Waiting for data...</h4>
 					<canvas id="weather_icon" width="128" height="128"></canvas>
-                    <div id="weatherCoords"></div>
+                    <div style="font-size:smaller" id="weatherCoords"></div>
                 </div>
             </div>
             <div id="middle_row">
                 <div id="div_mail" class="content_div_left">
                     <h3>MAIL</h3>
+                    <hr/>
                     <div id="emails">Waiting for data...</div>
                 </div>
                 <div id="div_calendar" class="content_div_right">
                     <h3>CALENDAR</h3>
+                    <hr/>
                     <div id="calEvents">Waiting for data...</div>
                 </div>
             </div>
             <div id="bottom_row">
                 <div id="div_news" class="content_div_left">
                     <h3>NEWS</h3>
-                    <div id="news_content">Test test...</div>
+                    <hr/>
+                    <div class="news_title"></div><br/>
+                    <div id="news_content">Waiting for data...</div>
+                    <hr/>
+                    <div class="technews_title"></div><br/>
+                    <div id="technews_content">Waiting for data...</div>
+                    <br/>
+                    <div style="font-size:smaller">
+						<a href="http://newsapi.org" style="color:#333;">Powered by NewsAPI</a>
+					</div>
                 </div>
-                <div id="div_technews" class="content_div_right">
-                    <h3>TECH NEWS</h3>
-                    <div id="technews_content">Test test...</div>
-                </div>
+                
             </div>
         </div>
     </div>

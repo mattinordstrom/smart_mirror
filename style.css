@@ -25,8 +25,13 @@ h1 {
     font-family: SFFedoraTitles;
 }
 
+h3 {
+    font-size: 16pt;
+    font-family: SFFedoraTitles;
+}
+
 h4 {
-    font-size: 18pt;
+    font-size: 14pt;
     font-family: SFFedoraTitles;
 }
 
@@ -57,4 +62,8 @@ h4 {
     margin-right: 20px;
     text-align: right;
     margin-top: 30px;
+}
+
+.news_title, .technews_title {
+    font-weight: bold;
 }
