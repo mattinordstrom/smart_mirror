@@ -1,23 +1,42 @@
-# smartmirror
+#smart_mirror
 
-cd server/ && npm install
+##Preparations 
+1.
+Install dependencies
+```sh 
+$ cd server/ && npm install
+```
 
-node main.js
+2.
+Google auth setup for calendar and email: 
+Download your **client_secret.json** and put it in smart_mirror/server/
 
-$ chromium-browser --kiosk file:///home/pi/smart_mirror/index.html
-(ctrl + w to exit)
-
-
-
-
-
-Google calendar API auth install:
 Follow Step 1 here:
 https://developers.google.com/google-apps/calendar/quickstart/nodejs
 
-
-
-Darksky setup:
-Change server/darksky-info.js
+3.
+Dark Sky setup for weather data:
+Set your coords and API key in **server/darksky_info.js**
 Get API key from here: https://darksky.net/dev/
-(git update-index --assume-unchanged server/darksky_info.js)
+
+4.
+News API setup:
+Set your news sources and API key in **src/news_config.js**
+Get API key from here: https://newsapi.org/account
+
+##Usage
+```sh 
+$ cd server/ && node main.js
+```
+
+```sh 
+$ chromium-browser --kiosk file:///home/pi/smart_mirror/index.html
+```
+Press ctrl + w to exit
+
+
+
+---
+To hide config changes in git:
+git update-index --assume-unchanged server/darksky_info.js
+git update-index --assume-unchanged src/news_config.js
