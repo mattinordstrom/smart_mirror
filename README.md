@@ -23,6 +23,16 @@ Get API key from here: https://darksky.net/dev/
 News API setup:  
 Set your news sources and API key in **src/news_config.js**  
 Get API key from here: https://newsapi.org/account
+
+**Note regarding google auth:**  
+The first time you run the sample, it will prompt you to authorize access:  
+
+a. Browse to the provided URL in your web browser.
+If you are not already logged into your Google account, you will be prompted to log in. If you are logged into multiple Google accounts, you will be asked to select one account to use for the authorization.  
+
+b. Click the Accept button.  
+
+c. Copy the code you're given, paste it into the command-line prompt, and press Enter.
   
 ##Usage
 ```sh 
