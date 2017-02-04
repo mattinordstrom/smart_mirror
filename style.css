@@ -22,7 +22,13 @@ body {
 
 h1 {
     margin-top: 0px;
-    font-size: 56pt;
+    font-size: 52pt;
+    font-family: SFFedoraTitles;
+}
+
+h2 {
+    margin-top: 0px;
+    font-size: 42pt;
     font-family: SFFedoraTitles;
 }
 
@@ -56,6 +62,7 @@ h4 {
     float: left;
     margin-left: 20px;
     margin-top: 50px;
+    margin-right: 20px;
 }
 
 .content_div_right {
