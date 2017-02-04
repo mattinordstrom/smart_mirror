@@ -17,21 +17,22 @@ body {
     color: #fff;
     background-color: #000;
     font-family: "Verdana";
+    font-size: 14pt;
 }
 
 h1 {
     margin-top: 0px;
-    font-size: 38pt;
+    font-size: 56pt;
     font-family: SFFedoraTitles;
 }
 
 h3 {
-    font-size: 16pt;
+    font-size: 24pt;
     font-family: SFFedoraTitles;
 }
 
 h4 {
-    font-size: 14pt;
+    font-size: 20pt;
     font-family: SFFedoraTitles;
 }
 
@@ -54,14 +55,14 @@ h4 {
 .content_div_left {
     float: left;
     margin-left: 20px;
-    margin-top: 30px;
+    margin-top: 50px;
 }
 
 .content_div_right {
     float: right;
     margin-right: 20px;
     text-align: right;
-    margin-top: 30px;
+    margin-top: 50px;
 }
 
 .news_title, .technews_title {

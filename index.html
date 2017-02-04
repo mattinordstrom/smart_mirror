@@ -47,8 +47,8 @@
 				$('#inner_content').css({
 					width: $('#container').height()
 				});
-				$('#top_row, #middle_row, #bottom_row').css({
-					height: $('#container').width() / 3
+				$('#top_row, #bottom_row').css({
+					height: $('#container').width() / 2
 				});
 			}
 			$(window).resize(function () {
@@ -67,9 +67,14 @@
     <div id="content">
         <div id="inner_content">
             <div id="top_row">
-                <div id="div_time" class="content_div_left">
+                <div id="div_time" class="content_div_left" style="width: 50%">
                     <h1>00:00</h1>
                     <h4></h4>
+                    <h4></h4>
+                    <hr/>
+                    <div id="emails">Waiting for data...</div>
+                    <hr/>
+                    <div id="calEvents">Waiting for data...</div>
                 </div>
                 <div id="div_weather" class="content_div_right">
                     <h1></h1>
@@ -78,20 +83,8 @@
                     <div style="font-size:smaller" id="weatherCoords"></div>
                 </div>
             </div>
-            <div id="middle_row">
-                <div id="div_mail" class="content_div_left">
-                    <h3>MAIL</h3>
-                    <hr/>
-                    <div id="emails">Waiting for data...</div>
-                </div>
-                <div id="div_calendar" class="content_div_right">
-                    <h3>CALENDAR</h3>
-                    <hr/>
-                    <div id="calEvents">Waiting for data...</div>
-                </div>
-            </div>
-            <div id="bottom_row">
-                <div id="div_news" class="content_div_left">
+            <div id="bottom_row" style="width=100%">
+                <div id="div_news" class="content_div_left" style="position:absolute; bottom:10px">
                     <h3>NEWS</h3>
                     <hr/>
                     <div class="news_title"></div><br/>
@@ -100,8 +93,10 @@
                     <div class="technews_title"></div><br/>
                     <div id="technews_content">Waiting for data...</div>
                     <br/>
-                    <div style="font-size:smaller">
-						<a href="http://newsapi.org" style="color:#333;">Powered by NewsAPI</a>
+                    <div style="font-size:smaller; color:#333;">
+						<a href="http://newsapi.org" style="color:#333;">Powered by NewsAPI</a> |
+						<a href="https://darksky.net/poweredby/" style="color:#333;">Powered by Dark Sky</a> |
+						<a href="https://console.developers.google.com/apis" style="color:#333;">Google APIs</a>
 					</div>
                 </div>
                 
