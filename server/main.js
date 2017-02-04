@@ -11,20 +11,19 @@ app.listen(8081);
 
 var Main = function (socket) {
 	console.log('io connected');
-	
+
 	this.googleCal = new gapi('calendar');
 	this.googleCal.readFile();
-	
+
 	this.googleMail = new gapi('gmail');
 	this.googleMail.readFile();
-	
+
 	this.forecast = new forecast();
-	
+
 	//calendar, mail, weather
 	this.ongoingProcesses = [false,false,false];
-	
-	setInterval(function() { 
-		
+
+	setInterval(function() {
 		//GOOGLE CALENDAR
 		///////////////////////
 		let oauth2ClientCAL = this.googleCal.getAuthClient();
@@ -36,14 +35,14 @@ var Main = function (socket) {
 					console.log('The API returned an error: ' + err);
 					return;
 				}
-				
+
 				socket.emit('calEvents', { calEvents: response.items });
-				
+
 			}.bind(this));
 		} else {
-			console.log('oauth2Client not set yet.');	
+			//console.log('oauth2Client not set.');
 		}
-		
+
 		//GOOGLE MAIL
 		///////////////////////
 		let oauth2ClientMAIL = this.googleMail.getAuthClient();
@@ -52,13 +51,13 @@ var Main = function (socket) {
 			this.googleMail.listUnreadEmails(oauth2ClientMAIL, function(response){
 				this.ongoingProcesses[1] = false;
 				socket.emit('emails', { numberOfUnreadEmails: response.resultSizeEstimate });
-				
+
 			}.bind(this));
-			
+
 		} else {
-			console.log('oauth2Client not set yet.');	
+			//console.log('oauth2Client not set.');
 		}
-		
+
 		//DARKSKY WEATHER
 		///////////////////////
 		if(!this.ongoingProcesses[2]){
@@ -68,9 +67,9 @@ var Main = function (socket) {
 				socket.emit('forecast', { forecast: response });
 			}.bind(this));
 		}
-		
+
 	}.bind(this), SYNC_INTERVAL * 1000);
-	
+
 }
 
 io.on('connection', Main);

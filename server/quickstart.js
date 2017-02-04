@@ -4,19 +4,20 @@ var google = require('googleapis');
 var googleAuth = require('google-auth-library');
 
 var TOKEN_DIR = (process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE) + '/.credentials/';
-    
+
 function GApi(type) {
 	this.type = type;
-	
+
 	this.tokenPath = TOKEN_DIR + type + '-nodejs-quickstart.json';
-	
+  console.log('Token path: ' + this.tokenPath + '\n');
+
 	// If modifying these scopes, delete your previously saved credentials
 	// at ~/.credentials/calendar-nodejs-quickstart.json
 	this.scopes = ['https://www.googleapis.com/auth/'+ type +'.readonly'];
-	
+
 
 	var oAuth2Client = null;
-	
+
 	this.setAuthClient = function(oauth2Client) {
         oAuth2Client = oauth2Client;
     }
@@ -83,7 +84,7 @@ GApi.prototype.getNewToken = function (oauth2Client, callback) {
 		input: process.stdin,
 		output: process.stdout
 	});
-	rl.question('Enter the code from that page here: ', function (code) {
+	rl.question('Enter the code from that page here: \n\n', function (code) {
 		rl.close();
 		oauth2Client.getToken(code, function (err, token) {
 			if (err) {
@@ -115,7 +116,6 @@ GApi.prototype.storeToken = function (token) {
 }
 
 /**
- * Lists the next 10 events on the user's primary calendar.
  *
  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
  */
@@ -124,17 +124,17 @@ GApi.prototype.listEvents = function (auth, callback) {
 		console.log('Error: Type is not calendar. '+this.type);
 		return;
 	}
-	
+
 	var calendar = google.calendar('v3');
 	calendar.events.list({
 		auth: auth,
 		calendarId: 'primary',
 		timeMin: (new Date()).toISOString(),
-		maxResults: 10,
+		maxResults: 5,
 		singleEvents: true,
 		orderBy: 'startTime'
 	}, callback);
-	
+
 }
 
 /**
@@ -157,10 +157,10 @@ GApi.prototype.listUnreadEmails = function (auth, callback) {
 			  console.log('The API returned an error: ' + err);
 			  return;
 			}
-			
+
 			callback(response);
 	  });
-	  
+
 }
 
 GApi.prototype.getLatestUnread = function (auth, callback, unreadEmails) {
@@ -168,7 +168,7 @@ GApi.prototype.getLatestUnread = function (auth, callback, unreadEmails) {
 		console.log('Error: Type is not gmail. '+this.type);
 		return;
 	}
-	
+
 	var gmail = google.gmail('v1');
 	  gmail.users.messages.get({
 		auth: auth,
@@ -179,7 +179,7 @@ GApi.prototype.getLatestUnread = function (auth, callback, unreadEmails) {
 			  console.log('The API returned an error: ' + err);
 			  return;
 			}
-			
+
 			callback(response);
 	  });
 }
