@@ -137,6 +137,28 @@ GApi.prototype.listEvents = function (auth, callback) {
 
 }
 
+GApi.prototype.getAmountOfUnreadEmails = function (auth, callback) {
+	if(this.type !== 'gmail') {
+		console.log('Error: Type is not gmail. '+this.type);
+		return;
+	}
+
+	  var gmail = google.gmail('v1');
+	  gmail.users.labels.get({
+		auth: auth,
+		userId: 'me',
+		id: 'UNREAD'
+	  }, function (err, response) {
+		  if (err) {
+			  console.log('The API returned an error: ' + err);
+			  return;
+			}
+
+			callback(response);
+	  });
+
+}
+
 /**
  *
  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.

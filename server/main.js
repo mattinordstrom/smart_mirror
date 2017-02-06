@@ -48,9 +48,9 @@ var Main = function (socket) {
 		let oauth2ClientMAIL = this.googleMail.getAuthClient();
 		if(oauth2ClientMAIL && !this.ongoingProcesses[1]){
 			this.ongoingProcesses[1] = true;
-			this.googleMail.listUnreadEmails(oauth2ClientMAIL, function(response){
+			this.googleMail.getAmountOfUnreadEmails(oauth2ClientMAIL, function(response){
 				this.ongoingProcesses[1] = false;
-				socket.emit('emails', { numberOfUnreadEmails: response.resultSizeEstimate });
+				socket.emit('emails', { numberOfUnreadEmails: response.threadsUnread });
 
 			}.bind(this));
 
